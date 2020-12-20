@@ -1,0 +1,15 @@
+{% extends 'blog/main.html' %}
+    {% block content %}
+        <div class="form-section">
+            <img src="{{ user.profile.avatar.url }}" alt="">
+            <h2>Логин: {{ user.username }}</h2>
+            <span>Почта: {{ user.email }}</span>
+            <h2>Изменить данные</h2>
+                <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ update_form }}
+                        {{ avatar_form }}
+                        <button type="submit">Изменить</button>
+                </form>
+        </div>
+    {% endblock %}

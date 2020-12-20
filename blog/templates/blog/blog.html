@@ -1,0 +1,60 @@
+{% extends 'blog/main.html' %}
+	{% block content %}
+
+		<div class="wrap-container">
+			<!-----------------Content-Box-------------------->
+			<div id="main-content">
+				<div class="wrap-content">
+					<div class="row">
+						{% for post in posts %}
+							<article class="single-post zerogrid">
+								<div class="row wrap-post"><!--Start Box-->
+									<div class="entry-header">
+										<span class="time">{{ post.date }}</span>
+										<h2 class="entry-title"><a href="{% url 'single-page' post.id %}">{{ post.title }}</a></h2>
+										<span style="font-style: 20px;">Автор: {{ post.author }}</span>
+									</div>
+									<div class="post-thumbnail-wrap">
+										<img src="{{ post.image.url }}">
+									</div>
+									<div class="entry-content">
+										<p>{{ post.text | slice:300 }}...</p>
+										<center><a class="button " href="{% url 'single-page' post.id %}">Читать далее</a></center>
+									</div>
+								</div>
+							</article>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{% if is_paginated %}
+
+			<div style="text-align: center;" class="paginator">
+				
+				{% if page_obj.has_previous %}
+					<a href="{% url 'blog-page' %}">Начало</a>
+					<a href="?page={{ page_obj.previous_page_number }}">Предыдущая</a>
+				{% endif %}
+
+				{% for num in page_obj.paginator.page_range %}
+
+					{% if num == page_obj.number %}
+						<button>{{ num }}</button>
+					{% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+						<a href="?page={{ num }}">{{ num }}</a>
+					{% endif %}
+
+				{% endfor %}
+
+				{% if page_obj.has_next %}
+					<a href="?page={{ page_obj.next_page_number }}">Следующая</a>
+					<a href="?page={{ page_obj.paginator.num_pages }}">Последняя</a>
+				{% endif %}
+
+			</div>
+
+		{% endif %}
+
+	{% endblock %}
